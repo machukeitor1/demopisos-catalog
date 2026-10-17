@@ -9,10 +9,12 @@
   <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"/>
 </p>
 
-> **Demo version of a project running in production for a real client** (a flooring and cladding retailer in Chile).
-> All brand names, products, prices, images and users in this repository are **fictional**.
+> **This is a demo of the original source code behind [www.revestimientoschillan.cl](https://www.revestimientoschillan.cl)**, a flooring and cladding store in Chillán, Chile, which I developed and which runs in production.
+> The client's data has been removed: brand, products, prices, images and users in this repository are **fictional**. The application code is the same.
 >
-> 🇨🇱 *Versión demo de un proyecto en producción para un cliente real. Todos los datos de este repositorio son ficticios.*
+> 🇨🇱 *Demo del código fuente original de [www.revestimientoschillan.cl](https://www.revestimientoschillan.cl), desarrollado por mí y en producción. Se eliminaron los datos del cliente: marca, productos, precios, imágenes y usuarios de este repositorio son ficticios.*
+>
+> 🔗 **Live site / Sitio en producción:** https://www.revestimientoschillan.cl
 
 ## What it does
 
@@ -31,7 +33,7 @@ A full-stack web platform for a building-materials store, with three areas:
 - **Tailwind CSS**
 - Auth: **JWT** in httpOnly cookies + **bcrypt** password hashing, separate roles for admin and sales reps
 - Documents: **jsPDF** + **html2canvas** (PDF), **docx** (Word), **SheetJS/xlsx** (Excel import)
-- Deployed on **Vercel**
+- Production version deployed on **Vercel**
 
 ## Architecture
 
@@ -79,7 +81,8 @@ npm run dev               # http://localhost:3000
 ## Notes
 
 - Product images are generated SVG placeholders (`npm run placeholders` regenerates them).
-- Image upload writes to `public/uploads`, which works locally; on serverless hosting (Vercel) uploaded files are not persisted — the production version uses object storage for images.
+- This repository is meant to be run locally; it is not deployed. To see the application working, visit the [live site](https://www.revestimientoschillan.cl).
+- Image upload writes to `public/uploads`, which works locally; the production version uses object storage for images.
 - `JWT_SECRET` is required in production; the app refuses to sign tokens without it.
 
 ## Author
