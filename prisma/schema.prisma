@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Categoria {
+  id          Int        @id @default(autoincrement())
+  nombre      String
+  slug        String     @unique
+  descripcion String?
+  imagen      String?
+  orden       Int        @default(0)
+  activo      Boolean    @default(true)
+  productos   Producto[]
+}
+
+model Producto {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  slug        String    @unique
+  sku         String    @unique
+  descripcion String?
+  dimensiones String?
+  unidad      String    @default("m2")
+  precio      Float
+  precioAntes Float?
+  descuento   Int?
+  marca       String    @default("")
+  imagenes    String    @default("[]")
+  destacado   Boolean   @default(false)
+  activo      Boolean   @default(true)
+  orden       Int       @default(0)
+  categoriaId Int
+  rendimiento   Float?
+  unidadVenta   String    @default("un")
+  precioUnitario Float    @default(0)
+  createdAt     DateTime  @default(now())
+  categoria   Categoria @relation(fields: [categoriaId], references: [id])
+}
+
+model Banner {
+  id          Int     @id @default(autoincrement())
+  titulo      String
+  subtitulo   String?
+  badge       String?
+  imagen      String
+  imagenMovil String?
+  url         String?
+  orden       Int     @default(0)
+  activo      Boolean @default(true)
+}
+
+model Sucursal {
+  id              Int     @id @default(autoincrement())
+  nombre          String
+  zona            String
+  direccion       String
+  region          String
+  esCasaMatriz    Boolean @default(false)
+  horarioAtencion String
+  horarioEntrega  String?
+  whatsapp        String
+  telefono        String?
+  emailPostventa  String?
+  urlMaps         String?
+  activo          Boolean @default(true)
+  orden           Int     @default(0)
+}
+
+model Configuracion {
+  id              Int     @id @default(autoincrement())
+  nombreEmpresa   String  @default("Mi Empresa")
+  logo            String?
+  whatsappGlobal  String?
+  facebook        String?
+  instagram       String?
+  tiktok          String?
+  youtube         String?
+  emailContacto   String?
+  metaTitle       String?
+  metaDescription String?
+  urlMapa         String?
+}
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+}
+
+model Vendedor {
+  id           Int          @id @default(autoincrement())
+  nombre       String
+  rut          String       @unique
+  telefono     String?
+  email        String?
+  password     String
+  activo       Boolean      @default(true)
+  cotizaciones Cotizacion[]
+}
+
+model Cliente {
+  id           Int          @id @default(autoincrement())
+  nombre       String
+  rut          String?
+  direccion    String?
+  comuna       String?
+  telefono     String?
+  email        String?
+  createdAt    DateTime     @default(now())
+  cotizaciones Cotizacion[]
+}
+
+model Cotizacion {
+  id          Int              @id @default(autoincrement())
+  numero      String           @unique
+  createdAt   DateTime         @default(now())
+  vencimiento DateTime
+  subtotal    Float
+  iva         Float
+  total       Float
+  notas       String?
+  estado      String           @default("Pendiente")
+  clienteId   Int
+  vendedorId  Int
+  vendedor    Vendedor         @relation(fields: [vendedorId], references: [id])
+  cliente     Cliente          @relation(fields: [clienteId], references: [id])
+  items       CotizacionItem[]
+}
+
+model CotizacionItem {
+  id             Int        @id @default(autoincrement())
+  cotizacionId   Int
+  productoId     Int?
+  descripcion    String
+  cantidad       Float
+  precioUnitario Float
+  descuentoPorc  Float      @default(0)
+  importe        Float
+  proyectoM2     Float?
+  rendimiento    Float      @default(1)
+  unidadVenta    String     @default("un")
+  cotizacion     Cotizacion @relation(fields: [cotizacionId], references: [id], onDelete: Cascade)
+}
